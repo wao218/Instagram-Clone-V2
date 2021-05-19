@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Firebase
 
 class ViewController: UIViewController {
 
+  // MARK: - UI ELEMENTS
   let plusPhotoButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "plus_photo")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -21,6 +23,9 @@ class ViewController: UIViewController {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
+    
+    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+    
     return textField
   }()
   
@@ -30,6 +35,9 @@ class ViewController: UIViewController {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
+    
+    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+    
     return textField
   }()
   
@@ -40,6 +48,9 @@ class ViewController: UIViewController {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
+    
+    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+    
     return textField
   }()
   
@@ -50,9 +61,16 @@ class ViewController: UIViewController {
     button.layer.cornerRadius = 5
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
     button.setTitleColor(.white, for: .normal)
+    
+    button.isEnabled = false
+    
+    button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
+    
     return button
   }()
   
+  
+  // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -64,7 +82,7 @@ class ViewController: UIViewController {
 
   }
 
-  
+  // MARK: - HELPER METHODS
   fileprivate func setupInputFields() {
     
     let stackView = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, signUpButton])
@@ -76,6 +94,39 @@ class ViewController: UIViewController {
     view.addSubview(stackView)
     
     stackView.anchor(top: plusPhotoButton.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 20, left: 40, bottom: 0, right: 40), size: .init(width: 0, height: 200))
+    
+  }
+  
+  
+  // MARK: - ACTION METHODS
+  @objc private func handleSignUp() {
+    
+    guard let email = emailTextField.text, !email.isEmpty else { return }
+    guard let username = usernameTextField.text, !username.isEmpty else { return }
+    guard let password = passwordTextField.text, !password.isEmpty else { return }
+    
+    Firebase.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+      guard authResult != nil, error == nil else {
+        print("Failed to create user: ", error ?? "")
+        return
+      }
+      
+      print("Successfully created user: ", authResult?.user.uid ?? "")
+      
+    }
+  }
+  
+  @objc private func handleTextInputChange() {
+    
+    let isFormValid = !(emailTextField.text?.isEmpty ?? true) && !(usernameTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
+    
+    if isFormValid {
+      signUpButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+      signUpButton.isEnabled = true
+    } else {
+      signUpButton.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
+      signUpButton.isEnabled = false
+    }
     
   }
 
