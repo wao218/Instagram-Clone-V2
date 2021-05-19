@@ -12,7 +12,6 @@ class ViewController: UIViewController {
   let plusPhotoButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "plus_photo")?.withRenderingMode(.alwaysOriginal), for: .normal)
-    button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
   
@@ -22,7 +21,6 @@ class ViewController: UIViewController {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
-    textField.translatesAutoresizingMaskIntoConstraints = false
     return textField
   }()
   
@@ -32,7 +30,6 @@ class ViewController: UIViewController {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
-    textField.translatesAutoresizingMaskIntoConstraints = false
     return textField
   }()
   
@@ -43,14 +40,13 @@ class ViewController: UIViewController {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
-    textField.translatesAutoresizingMaskIntoConstraints = false
     return textField
   }()
   
   let signUpButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("Sign Up", for: .normal)
-    button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+    button.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
     button.layer.cornerRadius = 5
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
     button.setTitleColor(.white, for: .normal)
@@ -61,15 +57,13 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     
     view.addSubview(plusPhotoButton)
-    
-    plusPhotoButton.heightAnchor.constraint(equalToConstant: 140).isActive = true
-    plusPhotoButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
-    plusPhotoButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    plusPhotoButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
+
+    plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: nil, centerX: view.centerXAnchor, centerY: nil, padding: .init(top: 40, left: 0, bottom: 0, right: 0), size: .init(width: 140, height: 140))
     
     setupInputFields()
 
   }
+
   
   fileprivate func setupInputFields() {
     
@@ -81,14 +75,11 @@ class ViewController: UIViewController {
     
     view.addSubview(stackView)
     
-    stackView.topAnchor.constraint(equalTo: plusPhotoButton.bottomAnchor, constant: 20).isActive = true
-    stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 40).isActive = true
-    stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -40).isActive = true
-    stackView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-    
+    stackView.anchor(top: plusPhotoButton.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 20, left: 40, bottom: 0, right: 40), size: .init(width: 0, height: 200))
     
   }
 
 
 }
+
 
