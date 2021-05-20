@@ -14,6 +14,9 @@ class ViewController: UIViewController {
   let plusPhotoButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "plus_photo")?.withRenderingMode(.alwaysOriginal), for: .normal)
+    
+    button.addTarget(self, action: #selector(handlePlusPhoto), for: .touchUpInside)
+    
     return button
   }()
   
@@ -105,13 +108,58 @@ class ViewController: UIViewController {
     guard let username = usernameTextField.text, !username.isEmpty else { return }
     guard let password = passwordTextField.text, !password.isEmpty else { return }
     
-    Firebase.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+    Firebase.Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
       guard authResult != nil, error == nil else {
         print("Failed to create user: ", error ?? "")
         return
       }
       
       print("Successfully created user: ", authResult?.user.uid ?? "")
+      
+      guard let uid = authResult?.user.uid else { return }
+      guard let image = self?.plusPhotoButton.imageView?.image else { return }
+      
+      guard let uploadData = image.jpegData(compressionQuality: 0.3) else { return }
+      
+      let filename = NSUUID().uuidString
+      
+      Firebase.Storage.storage().reference().child("profile_images/\(filename)").putData(uploadData, metadata: nil) { (metadata, error) in
+        
+        guard error == nil else {
+          print("Failed to upload profile image: ", error ?? "")
+          return
+        }
+        
+        
+        Firebase.Storage.storage().reference().child("profile_images/\(filename)").downloadURL { (url, error) in
+          guard let url = url else {
+            print("Failed to get profile image download url: ", error ?? "")
+            return
+          }
+          
+          let urlString = url.absoluteString
+          print("Successfully uploaded profile image: ", urlString)
+          
+          let dictionaryValues = [
+            "username": username,
+            "profileImageUrl": urlString
+          ]
+          let values = [uid: dictionaryValues]
+
+          Firebase.Database.database().reference().child("users").updateChildValues(values) { (error, ref) in
+            guard error == nil else {
+              print("Failed to save user info into db: ", error ?? "")
+              return
+            }
+
+            print("Successfully saved user info into db")
+          }
+        }
+        
+        
+      }
+      
+      
       
     }
   }
@@ -129,8 +177,34 @@ class ViewController: UIViewController {
     }
     
   }
+  
+  @objc private func handlePlusPhoto() {
+    let imagePickerController = UIImagePickerController()
+    imagePickerController.delegate = self
+    imagePickerController.allowsEditing = true
+    
+    present(imagePickerController, animated: true, completion: nil)
+  }
 
 
+}
+
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    
+    if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+      plusPhotoButton.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
+    } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+      plusPhotoButton.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    
+    plusPhotoButton.layer.cornerRadius = plusPhotoButton.frame.width / 2
+    plusPhotoButton.layer.masksToBounds = true
+    plusPhotoButton.layer.borderColor = UIColor.black.cgColor
+    plusPhotoButton.layer.borderWidth = 2
+    
+    picker.dismiss(animated: true, completion: nil)
+  }
 }
 
 

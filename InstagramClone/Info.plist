@@ -62,5 +62,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow access to photo library to choose profile picture.</string>
 </dict>
 </plist>
