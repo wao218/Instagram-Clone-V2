@@ -3,13 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		216875AE8C024A24E393777D /* Pods_InstagramClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B32863466C0C37AFAB5A253 /* Pods_InstagramClone.framework */; };
 		2B2E86F826544C440006D997 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E86F726544C440006D997 /* Extensions.swift */; };
 		2B2E86FD2655B2A50006D997 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B2E86FC2655B2A50006D997 /* GoogleService-Info.plist */; };
+		2B2E87262657111A0006D997 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E87252657111A0006D997 /* MainTabBarViewController.swift */; };
+		2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E872D265713120006D997 /* UserProfileViewController.swift */; };
 		2B2E9F592654264C009A3631 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E9F582654264C009A3631 /* AppDelegate.swift */; };
 		2B2E9F5B2654264C009A3631 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E9F5A2654264C009A3631 /* SceneDelegate.swift */; };
 		2B2E9F5D2654264C009A3631 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E9F5C2654264C009A3631 /* ViewController.swift */; };
@@ -45,6 +47,8 @@
 		29A295F90308366F134F80C9 /* Pods-InstagramClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClone.release.xcconfig"; path = "Target Support Files/Pods-InstagramClone/Pods-InstagramClone.release.xcconfig"; sourceTree = "<group>"; };
 		2B2E86F726544C440006D997 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2B2E86FC2655B2A50006D997 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B2E87252657111A0006D997 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		2B2E872D265713120006D997 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		2B2E9F552654264C009A3631 /* InstagramClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B2E9F582654264C009A3631 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B2E9F5A2654264C009A3631 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 				2B2E86F626544C240006D997 /* Utils */,
 				2B2E9F582654264C009A3631 /* AppDelegate.swift */,
 				2B2E9F5A2654264C009A3631 /* SceneDelegate.swift */,
+				2B2E87252657111A0006D997 /* MainTabBarViewController.swift */,
+				2B2E872D265713120006D997 /* UserProfileViewController.swift */,
 				2B2E9F5C2654264C009A3631 /* ViewController.swift */,
 				2B2E9F5E2654264C009A3631 /* Main.storyboard */,
 				2B2E9F642654265C009A3631 /* Assets.xcassets */,
@@ -182,7 +188,6 @@
 				C1A0803E99B58773A0FDED3B /* Pods-InstagramCloneTests.debug.xcconfig */,
 				4670E515766DFD23202DBC55 /* Pods-InstagramCloneTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -427,7 +432,9 @@
 			files = (
 				2B2E86F826544C440006D997 /* Extensions.swift in Sources */,
 				2B2E9F5D2654264C009A3631 /* ViewController.swift in Sources */,
+				2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */,
 				2B2E9F592654264C009A3631 /* AppDelegate.swift in Sources */,
+				2B2E87262657111A0006D997 /* MainTabBarViewController.swift in Sources */,
 				2B2E9F632654264C009A3631 /* InstagramClone.xcdatamodeld in Sources */,
 				2B2E9F5B2654264C009A3631 /* SceneDelegate.swift in Sources */,
 			);
