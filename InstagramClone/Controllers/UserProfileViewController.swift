@@ -26,6 +26,8 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
     collectionView?.register(UserProfileHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerId")
     
     collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+    
+    setupLogOutButton()
   }
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -84,5 +86,27 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
       print("Failed to fetch user: ", error)
     }
 
+  }
+  
+  fileprivate func setupLogOutButton() {
+    navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogOut))
+  }
+  
+  @objc private func handleLogOut() {
+    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    
+    alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
+      
+      do {
+        try Firebase.Auth.auth().signOut()
+      } catch let error {
+        print("Failed to sign out: ", error)
+      }
+      
+    }))
+    
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    
+    present(alertController, animated: true, completion: nil)
   }
 }

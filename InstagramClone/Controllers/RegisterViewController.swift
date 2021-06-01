@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class ViewController: UIViewController {
+class RegisterViewController: UIViewController {
 
   // MARK: - UI ELEMENTS
   let plusPhotoButton: UIButton = {
@@ -76,6 +76,8 @@ class ViewController: UIViewController {
   // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    view.backgroundColor = .white
     
     view.addSubview(plusPhotoButton)
 
@@ -189,7 +191,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     
     if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
