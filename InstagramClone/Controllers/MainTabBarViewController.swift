@@ -10,6 +10,7 @@ import Firebase
 
 class MainTabBarViewController: UITabBarController {
   
+  // MARK: LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -24,6 +25,12 @@ class MainTabBarViewController: UITabBarController {
       return
     }
     
+    setupViewControllers()
+    
+  }
+  
+  // MARK: - HELPER METHODS
+  func setupViewControllers() {
     let layout = UICollectionViewFlowLayout()
     let userProfileVC = UserProfileViewController(collectionViewLayout: layout)
     
@@ -35,8 +42,6 @@ class MainTabBarViewController: UITabBarController {
     tabBar.tintColor = .black
     
     viewControllers = [navController]
-    
   }
-  
   
 }

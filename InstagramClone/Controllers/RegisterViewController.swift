@@ -104,7 +104,7 @@ class RegisterViewController: UIViewController {
   }
 
   // MARK: - HELPER METHODS
-  fileprivate func setupInputFields() {
+  private func setupInputFields() {
     
     let stackView = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, signUpButton])
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -171,6 +171,12 @@ class RegisterViewController: UIViewController {
             }
 
             print("Successfully saved user info into db")
+            
+            guard let mainTabBarController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController as? MainTabBarViewController else { return }
+            
+            mainTabBarController.setupViewControllers()
+            
+            self?.dismiss(animated: true, completion: nil)
           }
         }
       }

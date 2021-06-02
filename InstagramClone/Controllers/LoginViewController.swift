@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController {
   
+  // MARK - UI ELEMENTS
   let logoContainer: UIView = {
     let view = UIView()
     view.backgroundColor = UIColor.rgb(red: 0, green: 120, blue: 175)
@@ -42,7 +44,7 @@ class LoginViewController: UIViewController {
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
     
-//    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
     
     return textField
   }()
@@ -55,7 +57,7 @@ class LoginViewController: UIViewController {
     textField.borderStyle = .roundedRect
     textField.font = UIFont.systemFont(ofSize: 14)
     
-//    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+    textField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
     
     return textField
   }()
@@ -75,6 +77,7 @@ class LoginViewController: UIViewController {
     return button
   }()
   
+  // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -92,11 +95,12 @@ class LoginViewController: UIViewController {
     setupInputFields()
   }
   
+  // MARK: - HELPER METHODS
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
   
-  fileprivate func setupInputFields() {
+  private func setupInputFields() {
     let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField, loginButton])
     stackView.axis = .vertical
     stackView.distribution = .fillEqually
@@ -106,12 +110,45 @@ class LoginViewController: UIViewController {
     stackView.anchor(top: logoContainer.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 40, left: 40, bottom: 0, right: 40), size: .init(width: 0, height: 140))
   }
   
+  
+  // MARK: - ACTION METHODS
   @objc private func handleShowSignUp() {
     let registerVC = RegisterViewController()
     navigationController?.pushViewController(registerVC, animated: true)
   }
   
   @objc private func handleLogin() {
+    guard let email = emailTextField.text else { return }
+    guard let password = passwordTextField.text else { return }
+    
+    Firebase.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+      guard error == nil else {
+        print("Failed to sign in with email: ", error ?? "")
+        return
+      }
+      
+      print("Successfully logged back in with user: ", authResult?.user.uid ?? "")
+      
+      guard let mainTabBarController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController as? MainTabBarViewController else { return }
+      
+      mainTabBarController.setupViewControllers()
+      
+      self?.dismiss(animated: true, completion: nil)
+    }
+  }
+  
+  @objc private func handleTextInputChange() {
+    
+    let isFormValid = !(emailTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
+    
+    if isFormValid {
+      loginButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+      loginButton.isEnabled = true
+    } else {
+      loginButton.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
+      loginButton.isEnabled = false
+    }
     
   }
+
 }

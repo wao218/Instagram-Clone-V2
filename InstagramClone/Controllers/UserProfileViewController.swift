@@ -14,6 +14,8 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
   
   let cellId = "cellId"
   
+  
+  // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -30,6 +32,7 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
     setupLogOutButton()
   }
   
+  // MARK: - COLLECTION VIEW DELEGATE FUNCTIONS
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 7
   }
@@ -67,7 +70,8 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
     return CGSize(width: view.frame.width, height: 200)
   }
   
-  fileprivate func fetchUser() {
+  // MARK: - HELPER METHODS
+  private func fetchUser() {
     
     guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
     
@@ -88,10 +92,11 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
 
   }
   
-  fileprivate func setupLogOutButton() {
+  private func setupLogOutButton() {
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogOut))
   }
   
+  // MARK: - ACTION METHODS
   @objc private func handleLogOut() {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
@@ -99,6 +104,10 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
       
       do {
         try Firebase.Auth.auth().signOut()
+        let loginVC = LoginViewController()
+        let navVC = UINavigationController(rootViewController: loginVC)
+        navVC.modalPresentationStyle = .fullScreen
+        self.present(navVC, animated: true, completion: nil)
       } catch let error {
         print("Failed to sign out: ", error)
       }

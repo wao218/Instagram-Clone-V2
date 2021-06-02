@@ -128,7 +128,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
   }
   
   // MARK: - HELPER METHODS
-  fileprivate func setupUserStats() {
+  private func setupUserStats() {
     let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
     stackView.distribution = .fillEqually
     
@@ -137,7 +137,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     stackView.anchor(top: self.topAnchor, leading: profileImageView.trailingAnchor, bottom: nil, trailing: self.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 12, left: 12, bottom: 0, right: 12), size: .init(width: 0, height: 50))
   }
   
-  fileprivate func setupBottomToolbar() {
+  private func setupBottomToolbar() {
     
     let topDividerView = UIView()
     topDividerView.backgroundColor = UIColor.lightGray
@@ -158,7 +158,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     bottomDividerView.anchor(top: stackView.bottomAnchor, leading: self.leadingAnchor, bottom: nil, trailing: self.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
   }
   
-  fileprivate func setupProfileImage() {
+  private func setupProfileImage() {
     guard let profileImageUrl = user?.profileImageUrl else { return }
     
     guard let url = URL(string: profileImageUrl) else { return }
