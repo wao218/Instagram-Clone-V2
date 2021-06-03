@@ -26,6 +26,7 @@
 		2B3550092666919100765AC0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3550082666919100765AC0 /* LoginViewController.swift */; };
 		2B35500B266897AE00765AC0 /* MediaSelectorCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35500A266897AD00765AC0 /* MediaSelectorCollectionViewController.swift */; };
 		2B35500D26694B2D00765AC0 /* MediaSelectorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35500C26694B2D00765AC0 /* MediaSelectorCollectionViewCell.swift */; };
+		2B35500F2669686700765AC0 /* MediaSelectorHeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35500E2669686700765AC0 /* MediaSelectorHeaderCollectionViewCell.swift */; };
 		305ED8C840CA99F13BA0D19A /* Pods_InstagramCloneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E688BADA79BC0A66A73A8FC9 /* Pods_InstagramCloneTests.framework */; };
 		9DF23C15512C7E284AC5B360 /* Pods_InstagramClone_InstagramCloneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86976AE5E27446B4CBFDEE5A /* Pods_InstagramClone_InstagramCloneUITests.framework */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,7 @@
 		2B3550082666919100765AC0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2B35500A266897AD00765AC0 /* MediaSelectorCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSelectorCollectionViewController.swift; sourceTree = "<group>"; };
 		2B35500C26694B2D00765AC0 /* MediaSelectorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSelectorCollectionViewCell.swift; sourceTree = "<group>"; };
+		2B35500E2669686700765AC0 /* MediaSelectorHeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSelectorHeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		4670E515766DFD23202DBC55 /* Pods-InstagramCloneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramCloneTests.release.xcconfig"; path = "Target Support Files/Pods-InstagramCloneTests/Pods-InstagramCloneTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B32863466C0C37AFAB5A253 /* Pods_InstagramClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86976AE5E27446B4CBFDEE5A /* Pods_InstagramClone_InstagramCloneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClone_InstagramCloneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +140,7 @@
 			children = (
 				2B2E873D2657281B0006D997 /* UserProfileHeaderCollectionViewCell.swift */,
 				2B35500C26694B2D00765AC0 /* MediaSelectorCollectionViewCell.swift */,
+				2B35500E2669686700765AC0 /* MediaSelectorHeaderCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B35500F2669686700765AC0 /* MediaSelectorHeaderCollectionViewCell.swift in Sources */,
 				2B2E86F826544C440006D997 /* Extensions.swift in Sources */,
 				2B2E9F5D2654264C009A3631 /* RegisterViewController.swift in Sources */,
 				2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */,

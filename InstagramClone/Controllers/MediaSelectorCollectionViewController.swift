@@ -12,16 +12,19 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   
   let cellId = "cellId"
   let headerId = "headerId"
+  var images = [UIImage]()
+  var selectedImage: UIImage?
+  var assets = [PHAsset]()
   
   // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
-    collectionView.backgroundColor = .yellow
+    collectionView.backgroundColor = .white
     
     // Register cell classes
     collectionView?.register(MediaSelectorCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
     
-    collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+    collectionView?.register(MediaSelectorHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
     
     setupNavigationButtons()
     
@@ -34,33 +37,48 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   
   // MARK: - HELPER METHODS
   
-  var images = [UIImage]()
-  private func fetchPhotos() {
-    print("Fetching photos")
+  private func assetsFetchOptions() -> PHFetchOptions {
     let fetchOptions = PHFetchOptions()
-    fetchOptions.fetchLimit = 10
+    fetchOptions.fetchLimit = 15
     let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
     fetchOptions.sortDescriptors = [sortDescriptor]
-    let allPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+    return fetchOptions
+  }
+  
+  private func fetchPhotos() {
+    print("Fetching photos")
     
-    allPhotos.enumerateObjects { asset, count, stop in
+    let allPhotos = PHAsset.fetchAssets(with: .image, options: assetsFetchOptions())
+    
+    DispatchQueue.global(qos: .background).async {
+      allPhotos.enumerateObjects { asset, count, stop in
 
-      let imageManager = PHImageManager.default()
-      let targetSize = CGSize(width: 350, height: 350)
-      let options = PHImageRequestOptions()
-      options.isSynchronous = true
-      imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { [weak self] (image, info) in
-        
-        if let image = image {
-          self?.images.append(image)
+        let imageManager = PHImageManager.default()
+        let targetSize = CGSize(width: 200, height: 200)
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { [weak self] (image, info) in
+          
+          if let image = image {
+            self?.images.append(image)
+            self?.assets.append(asset)
+            
+            if self?.selectedImage == nil {
+              self?.selectedImage = image
+            }
+          }
+          
+          if count == allPhotos.count - 1 {
+            DispatchQueue.main.async {
+              self?.collectionView.reloadData()
+            }
+          }
+          
         }
-        
-        if count == allPhotos.count - 1 {
-          self?.collectionView.reloadData()
-        }
-        
       }
     }
+    
+    
   }
   
   private func setupNavigationButtons() {
@@ -79,7 +97,7 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
     print("handling next")
   }
   
-  // MARK: - UICollectionViewDataSource
+  // MARK: - UICOLLECTIONVIEW DATASOURCE
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return images.count
@@ -95,8 +113,26 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   }
   
   override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath)
-    header.backgroundColor = .red
+    let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! MediaSelectorHeaderCollectionViewCell
+    
+    header.imageView.image = selectedImage
+    
+    if let selectedImage = selectedImage {
+      if let index = self.images.firstIndex(of: selectedImage) {
+        let selectedAsset = self.assets[index]
+        
+        let imageManager = PHImageManager.default()
+        let targetSize = CGSize(width: 600, height: 600)
+        imageManager.requestImage(for: selectedAsset, targetSize: targetSize, contentMode: .default, options: nil) { (image, info) in
+          
+          header.imageView.image = image
+          
+        }
+      }
+    }
+    
+
+    
     return header
   }
   
@@ -122,6 +158,11 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
     let width = view.frame.width
     return CGSize(width: width, height: width)
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    self.selectedImage = images[indexPath.item]
+    self.collectionView?.reloadData()
   }
   
 }
