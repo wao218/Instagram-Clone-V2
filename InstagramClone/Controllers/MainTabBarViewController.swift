@@ -8,11 +8,13 @@
 import UIKit
 import Firebase
 
-class MainTabBarViewController: UITabBarController {
+class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
   
   // MARK: LIFECYCLE METHODS
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.delegate = self
     
     if Firebase.Auth.auth().currentUser == nil {
       DispatchQueue.main.async {
@@ -28,6 +30,21 @@ class MainTabBarViewController: UITabBarController {
     setupViewControllers()
     
   }
+  
+  // MARK: - UITabBarController Delegate
+  func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+    let index = viewControllers?.firstIndex(of: viewController)
+    if index == 2 {
+      let layout = UICollectionViewFlowLayout()
+      let mediaSelectorController = MediaSelectorCollectionViewController(collectionViewLayout: layout)
+      let navController = UINavigationController(rootViewController: mediaSelectorController)
+      navController.modalPresentationStyle = .fullScreen
+      present(navController, animated: true, completion: nil)
+      return false
+    }
+    return true
+  }
+  
   
   // MARK: - HELPER METHODS
   func setupViewControllers() {
