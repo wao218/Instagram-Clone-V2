@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 class MediaSelectorCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
   
@@ -18,20 +19,50 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
     collectionView.backgroundColor = .yellow
     
     // Register cell classes
-    collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+    collectionView?.register(MediaSelectorCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
     
     collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
     
     setupNavigationButtons()
+    
+    fetchPhotos()
   }
   
   override var prefersStatusBarHidden: Bool {
     return true
   }
   
-  
-  
   // MARK: - HELPER METHODS
+  
+  var images = [UIImage]()
+  private func fetchPhotos() {
+    print("Fetching photos")
+    let fetchOptions = PHFetchOptions()
+    fetchOptions.fetchLimit = 10
+    let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+    fetchOptions.sortDescriptors = [sortDescriptor]
+    let allPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+    
+    allPhotos.enumerateObjects { asset, count, stop in
+
+      let imageManager = PHImageManager.default()
+      let targetSize = CGSize(width: 350, height: 350)
+      let options = PHImageRequestOptions()
+      options.isSynchronous = true
+      imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { [weak self] (image, info) in
+        
+        if let image = image {
+          self?.images.append(image)
+        }
+        
+        if count == allPhotos.count - 1 {
+          self?.collectionView.reloadData()
+        }
+        
+      }
+    }
+  }
+  
   private func setupNavigationButtons() {
     navigationController?.navigationBar.tintColor = .black
     navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
@@ -51,14 +82,14 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   // MARK: - UICollectionViewDataSource
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return images.count
   }
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MediaSelectorCollectionViewCell
     
     // Configure the cell
-    cell.backgroundColor = .blue
+    cell.photoImageView.image = images[indexPath.item]
     
     return cell
   }
