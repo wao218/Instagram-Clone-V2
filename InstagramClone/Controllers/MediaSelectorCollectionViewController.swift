@@ -12,9 +12,11 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   
   let cellId = "cellId"
   let headerId = "headerId"
+  
   var images = [UIImage]()
   var selectedImage: UIImage?
   var assets = [PHAsset]()
+  var header: MediaSelectorHeaderCollectionViewCell?
   
   // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
@@ -39,7 +41,7 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   
   private func assetsFetchOptions() -> PHFetchOptions {
     let fetchOptions = PHFetchOptions()
-    fetchOptions.fetchLimit = 15
+    fetchOptions.fetchLimit = 30
     let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
     fetchOptions.sortDescriptors = [sortDescriptor]
     return fetchOptions
@@ -94,7 +96,9 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   }
   
   @objc private func handleNext() {
-    print("handling next")
+    let shareMediaController = ShareMediaViewController()
+    shareMediaController.selectedImage = header?.imageView.image
+    navigationController?.pushViewController(shareMediaController, animated: true)
   }
   
   // MARK: - UICOLLECTIONVIEW DATASOURCE
@@ -114,6 +118,8 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   
   override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! MediaSelectorHeaderCollectionViewCell
+    
+    self.header = header
     
     header.imageView.image = selectedImage
     
@@ -163,6 +169,9 @@ class MediaSelectorCollectionViewController: UICollectionViewController, UIColle
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     self.selectedImage = images[indexPath.item]
     self.collectionView?.reloadData()
+    
+    let indexPath = IndexPath(item: 0, section: 0)
+    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
   }
   
 }
