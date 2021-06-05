@@ -150,6 +150,7 @@ class RegisterViewController: UIViewController {
         
         
         Firebase.Storage.storage().reference().child("profile_images/\(filename)").downloadURL { (url, error) in
+          guard error == nil else { return }
           guard let url = url else {
             print("Failed to get profile image download url: ", error ?? "")
             return

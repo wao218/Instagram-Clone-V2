@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ShareMediaViewController: UIViewController {
   
@@ -59,9 +60,69 @@ class ShareMediaViewController: UIViewController {
     textView.anchor(top: containerView.topAnchor, leading: imageView.trailingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, centerX: nil, centerY: nil, padding: .init(), size: .init())
   }
   
+  private func saveToDatabaseWithUrl(url: String) {
+    guard let postImage = selectedImage else { return }
+    guard let caption = textView.text else { return }
+    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    
+    let userPostRef = Firebase.Database.database().reference().child("posts").child(uid)
+    let ref = userPostRef.childByAutoId()
+    let values = [
+      "url": url,
+      "caption": caption,
+      "imageWidth": postImage.size.width,
+      "imageHeight": postImage.size.height,
+      "creationDate": Date().timeIntervalSince1970
+    ] as [String : Any]
+    
+    ref.updateChildValues(values) { [weak self] (error, ref) in
+      guard error == nil else {
+        self?.navigationItem.rightBarButtonItem?.isEnabled = true
+        print("Failed to save post to db: ", error ?? "")
+        return
+      }
+      
+      print("Successfully saved post to db.")
+      self?.dismiss(animated: true, completion: nil)
+    }
+  }
+  
   // MARK: - ACTION METHODS
   @objc private func handleShare() {
-    print("handle share")
+    guard let image = selectedImage else { return }
+    
+    guard let uploadDate = image.jpegData(compressionQuality: 0.5) else { return }
+    
+    navigationItem.rightBarButtonItem?.isEnabled = false
+    
+    let filename = NSUUID().uuidString
+    Firebase.Storage.storage().reference().child("posts/\(filename)").putData(uploadDate, metadata: nil) { [weak self] (metadata, error) in
+      
+      guard error == nil else {
+        self?.navigationItem.rightBarButtonItem?.isEnabled = true
+        print("Failed to upload post: ", error ?? "")
+        return
+      }
+      
+      Firebase.Storage.storage().reference().child("posts/\(filename)").downloadURL { [weak self] (url, error) in
+        guard error == nil else {
+          self?.navigationItem.rightBarButtonItem?.isEnabled = true
+          return
+        }
+        
+        guard let url = url else {
+          print("Failed to get download url: ", error ?? "")
+          return
+        }
+        
+        let urlString = url.absoluteString
+        print("Successfully uploaded image: ", urlString)
+        
+        self?.saveToDatabaseWithUrl(url: urlString)
+        
+      }
+      
+    }
   }
   
 }
