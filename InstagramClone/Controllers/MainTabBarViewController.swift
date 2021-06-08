@@ -49,7 +49,7 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
   // MARK: - HELPER METHODS
   func setupViewControllers() {
     // Home Tab
-    let homeNavController = templateNavController(unselectedImage: UIImage(named: "home_unselected"), selectedImage: UIImage(named: "home_selected"))
+    let homeNavController = templateNavController(unselectedImage: UIImage(named: "home_unselected"), selectedImage: UIImage(named: "home_selected"), rootViewController: HomeCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
     
     // search Tab
     
@@ -85,9 +85,9 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
   }
   
-  private func templateNavController(unselectedImage: UIImage?, selectedImage: UIImage?) -> UINavigationController {
-    let homeVC = UIViewController()
-    let navController = UINavigationController(rootViewController: homeVC)
+  private func templateNavController(unselectedImage: UIImage?, selectedImage: UIImage?, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
+    let viewController = rootViewController
+    let navController = UINavigationController(rootViewController: viewController)
     navController.tabBarItem.image = unselectedImage
     navController.tabBarItem.selectedImage = selectedImage
     return navController

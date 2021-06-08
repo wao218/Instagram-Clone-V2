@@ -11,14 +11,15 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
   // MARK: - MODEL
   var user: User? {
     didSet {
-      setupProfileImage()
+      guard let profileImageUrl = user?.profileImageUrl else { return }
+      profileImageView.loadImage(urlString: profileImageUrl)
       usernameLabel.text = user?.username
     }
   }
   
   // MARK: - UI ELEMENTS
-  let profileImageView: UIImageView = {
-    let imageView = UIImageView()
+  let profileImageView: CustomImageView = {
+    let imageView = CustomImageView()
     return imageView
   }()
   
@@ -158,25 +159,4 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     bottomDividerView.anchor(top: stackView.bottomAnchor, leading: self.leadingAnchor, bottom: nil, trailing: self.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
   }
   
-  private func setupProfileImage() {
-    guard let profileImageUrl = user?.profileImageUrl else { return }
-    
-    guard let url = URL(string: profileImageUrl) else { return }
-    print(url)
-    
-    URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-      // check for the error, then construct the image using data
-      guard error == nil else {
-        print("Failed to fetch profile image: ", error ?? "")
-        return
-      }
-      
-      guard let data = data else { return }
-      
-      DispatchQueue.main.async {
-        self?.profileImageView.image = UIImage(data: data)
-      }
-      
-    }.resume()
-  }
 }

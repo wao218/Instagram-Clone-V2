@@ -11,6 +11,7 @@ import Firebase
 class UserProfileViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
   
   var user: User?
+  var posts = [Post]()
   
   let cellId = "cellId"
   
@@ -27,20 +28,23 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
     
     collectionView?.register(UserProfileHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerId")
     
-    collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+    collectionView?.register(UserProfilePostsCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
     
     setupLogOutButton()
+    
+    fetchOrderedPosts()
   }
   
   // MARK: - COLLECTION VIEW DELEGATE FUNCTIONS
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 7
+    return posts.count
   }
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePostsCollectionViewCell
     
-    cell.backgroundColor = .purple
+    cell.post = posts[indexPath.item]
+
     
     return cell
   }
@@ -71,6 +75,24 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
   }
   
   // MARK: - HELPER METHODS
+  private func fetchOrderedPosts() {
+    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    let ref = Firebase.Database.database().reference().child("posts/\(uid)")
+    
+    ref.queryOrdered(byChild: "creationDate").observe(.childAdded) { [weak self] (snapshot) in
+      guard let dictionary = snapshot.value as? [String: Any] else { return }
+      
+      let post = Post(dictionary: dictionary)
+      self?.posts.append(post)
+      
+      self?.collectionView.reloadData()
+      
+    } withCancel: { (error) in
+      print("Failed to fetch ordered posts: ", error)
+    }
+
+  }
+  
   private func fetchUser() {
     
     guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
