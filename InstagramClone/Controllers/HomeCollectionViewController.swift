@@ -105,7 +105,14 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
   // MARK: - UICollectionViewDelegateFlowLayout
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: view.frame.width, height: 200)
+    
+    var height: CGFloat = 40 + 8 + 8 // username label size plus top and bottom padding
+    height += view.frame.width // space for square image view
+    height += 50 // space for post buttons
+    height += 60 // space for post caption
+    
+    
+    return CGSize(width: view.frame.width, height: height)
   }
   
 }
