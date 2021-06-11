@@ -18,7 +18,6 @@ class UserProfilePostsCollectionViewCell: UICollectionViewCell {
   
   let imageView: CustomImageView = {
     let imageView = CustomImageView()
-    imageView.backgroundColor = .red
     imageView.contentMode = .scaleAspectFill
     imageView.clipsToBounds = true
     return imageView

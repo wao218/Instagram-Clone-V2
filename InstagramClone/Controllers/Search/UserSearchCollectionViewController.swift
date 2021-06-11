@@ -34,6 +34,7 @@ class UserSearchCollectionViewController: UICollectionViewController, UICollecti
     
     collectionView.backgroundColor = .white
     collectionView.alwaysBounceVertical = true
+    collectionView.keyboardDismissMode = .onDrag
     
     let navBar = navigationController?.navigationBar
     navBar?.addSubview(searchBar)
@@ -41,6 +42,11 @@ class UserSearchCollectionViewController: UICollectionViewController, UICollecti
     searchBar.anchor(top: navBar?.topAnchor, leading: navBar?.leadingAnchor, bottom: navBar?.bottomAnchor, trailing: navBar?.trailingAnchor, padding: .init(top: 0, left: 8, bottom: 0, right: 8))
     
     fetchUsers()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    searchBar.isHidden = false
   }
   
   // MARK: - Helper Methods
@@ -53,7 +59,11 @@ class UserSearchCollectionViewController: UICollectionViewController, UICollecti
       guard let dictionaries = snapshot.value as? [String: Any] else { return }
       
       dictionaries.forEach { (key, value) in
-        print(key, value)
+        if key == Firebase.Auth.auth().currentUser?.uid {
+          print("Found myself omit from lits")
+          return
+        }
+        
         guard let userDictionary = value as? [String: Any] else { return }
         let user = User(uid: key, dictionary: userDictionary)
         self?.users.append(user)
@@ -96,7 +106,18 @@ class UserSearchCollectionViewController: UICollectionViewController, UICollecti
   }
   
   // MARK: - UICollectionViewDelegate
-  
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    searchBar.isHidden = true
+    searchBar.resignFirstResponder()
+    
+    let user = filteredUsers[indexPath.item]
+    print(user.username)
+    
+    let userProfileController = UserProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    userProfileController.userId = user.uid
+    navigationController?.pushViewController(userProfileController, animated: true)
+    
+  }
  
   
 }

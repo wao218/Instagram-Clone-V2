@@ -14,7 +14,7 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
   var posts = [Post]()
   
   let cellId = "cellId"
-  
+  var userId: String?
   
   // MARK: - LIFECYCLE METHODS
   override func viewDidLoad() {
@@ -22,17 +22,13 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
     
     collectionView?.backgroundColor = .white
     
-    navigationItem.title = Firebase.Auth.auth().currentUser?.uid
-    
-    fetchUser()
-    
     collectionView?.register(UserProfileHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerId")
     
     collectionView?.register(UserProfilePostsCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
     
+    fetchUser()
     setupLogOutButton()
-    
-    fetchOrderedPosts()
+//    fetchOrderedPosts()
   }
   
   // MARK: - COLLECTION VIEW DELEGATE FUNCTIONS
@@ -76,7 +72,7 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
   
   // MARK: - HELPER METHODS
   private func fetchOrderedPosts() {
-    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    guard let uid = user?.uid else { return }
     let ref = Firebase.Database.database().reference().child("posts/\(uid)")
     
     ref.queryOrdered(byChild: "creationDate").observe(.childAdded) { [weak self] (snapshot) in
@@ -96,12 +92,14 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
   }
   
   private func fetchUser() {
-    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    
+    let uid = userId ?? Firebase.Auth.auth().currentUser?.uid ?? ""
     
     Firebase.Database.fetchUserWithUID(uid: uid) { [weak self] user in
       self?.user = user
       self?.navigationItem.title = self?.user?.username
       self?.collectionView.reloadData()
+      self?.fetchOrderedPosts()
     }
   }
   
