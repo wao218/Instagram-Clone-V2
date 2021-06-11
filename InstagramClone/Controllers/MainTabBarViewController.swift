@@ -53,7 +53,7 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     // search Tab
     
-    let searchNavController = templateNavController(unselectedImage: UIImage(named: "search_unselected"), selectedImage: UIImage(named: "search_selected"))
+    let searchNavController = templateNavController(unselectedImage: UIImage(named: "search_unselected"), selectedImage: UIImage(named: "search_selected"), rootViewController: UserSearchCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
     
     // Add photo / video tab
     let plusNavController = templateNavController(unselectedImage: UIImage(named: "plus_unselected"), selectedImage: UIImage(named: "plus_unselected"))
