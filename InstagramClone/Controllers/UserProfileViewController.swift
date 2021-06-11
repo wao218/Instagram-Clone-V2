@@ -96,24 +96,13 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
   }
   
   private func fetchUser() {
-    
     guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
     
-    Firebase.Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value) { [weak self] (snapshot) in
-      print(snapshot.value ?? "")
-      
-      guard let dictionary = snapshot.value as? [String: Any] else { return }
-      
-      self?.user = User(dictionary: dictionary)
-      
+    Firebase.Database.fetchUserWithUID(uid: uid) { [weak self] user in
+      self?.user = user
       self?.navigationItem.title = self?.user?.username
-      
       self?.collectionView.reloadData()
-      
-    } withCancel: { (error) in
-      print("Failed to fetch user: ", error)
     }
-
   }
   
   private func setupLogOutButton() {

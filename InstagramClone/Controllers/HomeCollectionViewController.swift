@@ -35,38 +35,37 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
   private func fetchPosts() {
     guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
     
-    Firebase.Database.database().reference().child("users/\(uid)").observeSingleEvent(of: .value) { snapshot in
-      guard let userDictionary = snapshot.value as? [String: Any] else { return }
-      let user = User(dictionary: userDictionary)
-      
-      
-      let ref = Firebase.Database.database().reference().child("posts/\(uid)")
-      ref.observeSingleEvent(of: .value) { [weak self] (snapshot) in
-        
-        guard let dictionaries = snapshot.value as? [String: Any] else { return }
-        
-        dictionaries.forEach { (key, value) in
-          
-          guard let dictionary = value as? [String: Any] else { return }
-          
-          let post = Post(user: user, dictionary: dictionary)
-          
-          print(post.mediaUrl)
-          self?.posts.append(post)
-        }
-        
-        self?.collectionView.reloadData()
-        
-      } withCancel: { error in
-        print("Failed to fetch posts: ", error)
-      }
-      
-    } withCancel: { error in
-      print("Failed to fetch user for posts: \(error)")
+    Firebase.Database.fetchUserWithUID(uid: uid) { [weak self] user in
+      self?.fetchPostsWithUser(user: user)
     }
 
   }
   
+private func fetchPostsWithUser(user: User) {
+  
+  let ref = Firebase.Database.database().reference().child("posts/\(user.uid)")
+  ref.observeSingleEvent(of: .value) { [weak self] (snapshot) in
+    
+    guard let dictionaries = snapshot.value as? [String: Any] else { return }
+    
+    dictionaries.forEach { (key, value) in
+      
+      guard let dictionary = value as? [String: Any] else { return }
+      
+      let post = Post(user: user, dictionary: dictionary)
+      
+      print(post.mediaUrl)
+      self?.posts.append(post)
+    }
+    
+    self?.collectionView.reloadData()
+    
+  } withCancel: { error in
+    print("Failed to fetch posts: ", error)
+  }
+  
+}
+
   // MARK: - UICollectionViewDataSource
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

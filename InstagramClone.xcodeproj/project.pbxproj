@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		216875AE8C024A24E393777D /* Pods_InstagramClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B32863466C0C37AFAB5A253 /* Pods_InstagramClone.framework */; };
-		2B2E86F826544C440006D997 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E86F726544C440006D997 /* Extensions.swift */; };
+		2B2E86F826544C440006D997 /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E86F726544C440006D997 /* UIKitExtensions.swift */; };
 		2B2E86FD2655B2A50006D997 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B2E86FC2655B2A50006D997 /* GoogleService-Info.plist */; };
 		2B2E87262657111A0006D997 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E87252657111A0006D997 /* MainTabBarViewController.swift */; };
 		2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2E872D265713120006D997 /* UserProfileViewController.swift */; };
@@ -33,6 +33,7 @@
 		2B355017266EAD0400765AC0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B355016266EAD0400765AC0 /* CustomImageView.swift */; };
 		2B355019266EB69B00765AC0 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B355018266EB69B00765AC0 /* HomeCollectionViewController.swift */; };
 		2B35501B266EBD5000765AC0 /* HomePostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */; };
+		2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */; };
 		305ED8C840CA99F13BA0D19A /* Pods_InstagramCloneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E688BADA79BC0A66A73A8FC9 /* Pods_InstagramCloneTests.framework */; };
 		9DF23C15512C7E284AC5B360 /* Pods_InstagramClone_InstagramCloneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86976AE5E27446B4CBFDEE5A /* Pods_InstagramClone_InstagramCloneUITests.framework */; };
 /* End PBXBuildFile section */
@@ -57,7 +58,7 @@
 /* Begin PBXFileReference section */
 		2602EA92806ABA4A4F59448F /* Pods-InstagramClone-InstagramCloneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClone-InstagramCloneUITests.release.xcconfig"; path = "Target Support Files/Pods-InstagramClone-InstagramCloneUITests/Pods-InstagramClone-InstagramCloneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		29A295F90308366F134F80C9 /* Pods-InstagramClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClone.release.xcconfig"; path = "Target Support Files/Pods-InstagramClone/Pods-InstagramClone.release.xcconfig"; sourceTree = "<group>"; };
-		2B2E86F726544C440006D997 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		2B2E86F726544C440006D997 /* UIKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
 		2B2E86FC2655B2A50006D997 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B2E87252657111A0006D997 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		2B2E872D265713120006D997 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +89,7 @@
 		2B355016266EAD0400765AC0 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		2B355018266EB69B00765AC0 /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
 		2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostCollectionViewCell.swift; sourceTree = "<group>"; };
+		2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		4670E515766DFD23202DBC55 /* Pods-InstagramCloneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramCloneTests.release.xcconfig"; path = "Target Support Files/Pods-InstagramCloneTests/Pods-InstagramCloneTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B32863466C0C37AFAB5A253 /* Pods_InstagramClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86976AE5E27446B4CBFDEE5A /* Pods_InstagramClone_InstagramCloneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClone_InstagramCloneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,8 +132,9 @@
 			children = (
 				2B2E9F582654264C009A3631 /* AppDelegate.swift */,
 				2B2E9F5A2654264C009A3631 /* SceneDelegate.swift */,
-				2B2E86F726544C440006D997 /* Extensions.swift */,
+				2B2E86F726544C440006D997 /* UIKitExtensions.swift */,
 				2B355016266EAD0400765AC0 /* CustomImageView.swift */,
+				2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -494,7 +497,8 @@
 				2B355013266EA2F100765AC0 /* PostModel.swift in Sources */,
 				2B355011266B4E6C00765AC0 /* ShareMediaViewController.swift in Sources */,
 				2B355015266EA52800765AC0 /* UserProfilePostsCollectionViewCell.swift in Sources */,
-				2B2E86F826544C440006D997 /* Extensions.swift in Sources */,
+				2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */,
+				2B2E86F826544C440006D997 /* UIKitExtensions.swift in Sources */,
 				2B2E9F5D2654264C009A3631 /* RegisterViewController.swift in Sources */,
 				2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */,
 				2B2E9F592654264C009A3631 /* AppDelegate.swift in Sources */,
