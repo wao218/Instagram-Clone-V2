@@ -8,6 +8,14 @@
 import UIKit
 
 class UserSearchCollectionViewCell: UICollectionViewCell {
+  var user: User? {
+    didSet {
+      usernameLabel.text = user?.username
+      guard let profileImageUrl = user?.profileImageUrl else { return }
+      profileImageView.loadImage(urlString: profileImageUrl)
+    }
+  }
+  
   
   // MARK: - UI Elements
   private let profileImageView: CustomImageView = {
