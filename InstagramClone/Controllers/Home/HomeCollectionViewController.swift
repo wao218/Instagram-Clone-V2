@@ -25,9 +25,26 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
     setupNavigationItems()
     
     fetchPosts()
+    
+    fetchFollowingUserIds()
   }
   
   // MARK: - Helper Methods
+  private func fetchFollowingUserIds() {
+    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    Firebase.Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { [weak self] snapshot in
+      
+      guard let userDictionary = snapshot.value as? [String: Any] else { return }
+      userDictionary.forEach { (key, value) in
+        Firebase.Database.fetchUserWithUID(uid: key) { user in
+          self?.fetchPostsWithUser(user: user)
+        }
+      }
+      
+    } withCancel: { error in
+      print("Failed to fetch following users uid: ", error)
+    }
+  }
   private func setupNavigationItems() {
     navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
   }
@@ -58,6 +75,10 @@ private func fetchPostsWithUser(user: User) {
       self?.posts.append(post)
     }
     
+    self?.posts.sort(by: { p1, p2 in
+      return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+    })
+    
     self?.collectionView.reloadData()
     
   } withCancel: { error in
@@ -83,34 +104,7 @@ private func fetchPostsWithUser(user: User) {
   
   // MARK: - UICollectionViewDelegate
   
-  /*
-   // Uncomment this method to specify if the specified item should be highlighted during tracking
-   override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-   return true
-   }
-   */
-  
-  /*
-   // Uncomment this method to specify if the specified item should be selected
-   override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-   return true
-   }
-   */
-  
-  /*
-   // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-   override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-   return false
-   }
-   
-   override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-   return false
-   }
-   
-   override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-   
-   }
-   */
+
   
   // MARK: - UICollectionViewDelegateFlowLayout
   
