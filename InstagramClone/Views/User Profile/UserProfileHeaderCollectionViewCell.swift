@@ -6,18 +6,20 @@
 //
 
 import UIKit
+import Firebase
 
 class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
-  // MARK: - MODEL
+  // MARK: - Data Model
   var user: User? {
     didSet {
       guard let profileImageUrl = user?.profileImageUrl else { return }
       profileImageView.loadImage(urlString: profileImageUrl)
       usernameLabel.text = user?.username
+      setupEditFollowButton()
     }
   }
   
-  // MARK: - UI ELEMENTS
+  // MARK: - UI Elements
   let profileImageView: CustomImageView = {
     let imageView = CustomImageView()
     return imageView
@@ -93,7 +95,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     return label
   }()
   
-  let editProfileButton: UIButton = {
+  lazy var editFollowProfileButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("Edit Profile", for: .normal)
     button.setTitleColor(.black, for: .normal)
@@ -101,10 +103,11 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     button.layer.borderColor = UIColor.lightGray.cgColor
     button.layer.borderWidth = 1
     button.layer.cornerRadius = 3
+    button.addTarget(self, action: #selector(handleEditProfileOrFollow), for: .touchUpInside)
     return button
   }()
   
-  // MARK: - LIFE CYCLE METHODS
+  // MARK: - Life Cycle Methods
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -120,15 +123,84 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     
     setupUserStats()
     
-    addSubview(editProfileButton)
-    editProfileButton.anchor(top: postsLabel.bottomAnchor, leading: postsLabel.leadingAnchor, bottom: nil, trailing: followingLabel.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 2, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 34))
+    addSubview(editFollowProfileButton)
+    editFollowProfileButton.anchor(top: postsLabel.bottomAnchor, leading: postsLabel.leadingAnchor, bottom: nil, trailing: followingLabel.trailingAnchor, centerX: nil, centerY: nil, padding: .init(top: 2, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 34))
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - HELPER METHODS
+  // MARK: - Action Methods
+  @objc private func handleEditProfileOrFollow() {
+    print("Execute edit profile / follow / unfollow logic....")
+    
+    guard let currentLoggedInUserId = Firebase.Auth.auth().currentUser?.uid else { return }
+    guard let userId = user?.uid else { return }
+    
+    if editFollowProfileButton.titleLabel?.text == "Unfollow" {
+      // Unfollow Logic
+      Firebase.Database.database().reference().child(currentLoggedInUserId).child(userId).removeValue { [weak self] error, ref in
+        guard error == nil else {
+          print("Failed to unfollow user: ", error ?? "")
+          return
+        }
+        print("Successfully unfollowed user: ", self?.user?.username ?? "")
+        self?.setupFollowStyle()
+      }
+    } else {
+      // Follow Logic
+      let ref = Firebase.Database.database().reference().child("following").child(currentLoggedInUserId)
+      let values = [userId: 1]
+      
+      ref.updateChildValues(values) { [weak self] error, ref in
+        guard error == nil else {
+          print("Failed to follow user: ", error ?? "")
+          return
+        }
+        
+        print("Successfully followed user: ", self?.user?.username ?? "")
+        
+        self?.editFollowProfileButton.setTitle("Unfollow", for: .normal)
+        self?.editFollowProfileButton.backgroundColor = .white
+        self?.editFollowProfileButton.setTitleColor(.black, for: .normal)
+      }
+    }
+    
+  }
+  
+  
+  // MARK: - Helper Methods
+  private func setupFollowStyle() {
+    editFollowProfileButton.setTitle("Follow", for: .normal)
+    editFollowProfileButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+    editFollowProfileButton.setTitleColor(.white, for: .normal)
+    editFollowProfileButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+  }
+  
+  private func setupEditFollowButton() {
+    guard let currentLoggedInUserId = Firebase.Auth.auth().currentUser?.uid else { return }
+    guard let userId = user?.uid else { return }
+    
+    if currentLoggedInUserId != userId {
+      
+      // Check if following
+      Firebase.Database.database().reference().child("following").child(currentLoggedInUserId).child(userId).observeSingleEvent(of: .value) { [weak self] snapshot in
+        
+        if let isFollowing = snapshot.value as? Int, isFollowing == 1 {
+          self?.editFollowProfileButton.setTitle("Unfollow", for: .normal)
+          
+        } else {
+          self?.setupFollowStyle()
+        }
+        
+      } withCancel: { error in
+        print("Failed to check if following: ", error)
+      }
+      
+    }
+    
+  }
   private func setupUserStats() {
     let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
     stackView.distribution = .fillEqually
