@@ -9,27 +9,45 @@ import UIKit
 import Firebase
 
 class HomeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+  
   var posts = [Post]()
   private let reuseIdentifier = "Cell"
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: ShareMediaViewController.updateFeedNotifcationName, object: nil)
     
     // Register cell classes
     self.collectionView!.register(HomePostCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     
     collectionView?.backgroundColor = .white
     
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+    collectionView.refreshControl = refreshControl
+    
     setupNavigationItems()
     
-    fetchPosts()
-    
-    fetchFollowingUserIds()
+    fetchAllPosts()
   }
   
   // MARK: - Helper Methods
+  @objc private func handleUpdateFeed() {
+    handleRefresh()
+  }
+  
+  @objc private func handleRefresh() {
+    print("Handling refresh....")
+    posts.removeAll()
+    fetchAllPosts()
+  }
+  
+  private func fetchAllPosts() {
+    fetchPosts()
+    fetchFollowingUserIds()
+  }
+  
   private func fetchFollowingUserIds() {
     guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
     Firebase.Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { [weak self] snapshot in
@@ -55,38 +73,36 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
     Firebase.Database.fetchUserWithUID(uid: uid) { [weak self] user in
       self?.fetchPostsWithUser(user: user)
     }
-
+    
   }
   
-private func fetchPostsWithUser(user: User) {
-  
-  let ref = Firebase.Database.database().reference().child("posts/\(user.uid)")
-  ref.observeSingleEvent(of: .value) { [weak self] (snapshot) in
+  private func fetchPostsWithUser(user: User) {
     
-    guard let dictionaries = snapshot.value as? [String: Any] else { return }
-    
-    dictionaries.forEach { (key, value) in
+    let ref = Firebase.Database.database().reference().child("posts/\(user.uid)")
+    ref.observeSingleEvent(of: .value) { [weak self] (snapshot) in
+      self?.collectionView.refreshControl?.endRefreshing()
       
-      guard let dictionary = value as? [String: Any] else { return }
+      guard let dictionaries = snapshot.value as? [String: Any] else { return }
       
-      let post = Post(user: user, dictionary: dictionary)
+      dictionaries.forEach { (key, value) in
+        guard let dictionary = value as? [String: Any] else { return }
+        let post = Post(user: user, dictionary: dictionary)
+        print(post.mediaUrl)
+        self?.posts.append(post)
+      }
       
-      print(post.mediaUrl)
-      self?.posts.append(post)
+      self?.posts.sort(by: { p1, p2 in
+        return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+      })
+      
+      self?.collectionView.reloadData()
+      
+    } withCancel: { error in
+      print("Failed to fetch posts: ", error)
     }
     
-    self?.posts.sort(by: { p1, p2 in
-      return p1.creationDate.compare(p2.creationDate) == .orderedDescending
-    })
-    
-    self?.collectionView.reloadData()
-    
-  } withCancel: { error in
-    print("Failed to fetch posts: ", error)
   }
   
-}
-
   // MARK: - UICollectionViewDataSource
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -104,7 +120,7 @@ private func fetchPostsWithUser(user: User) {
   
   // MARK: - UICollectionViewDelegate
   
-
+  
   
   // MARK: - UICollectionViewDelegateFlowLayout
   

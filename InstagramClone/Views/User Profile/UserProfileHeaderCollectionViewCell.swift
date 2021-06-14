@@ -140,7 +140,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     
     if editFollowProfileButton.titleLabel?.text == "Unfollow" {
       // Unfollow Logic
-      Firebase.Database.database().reference().child(currentLoggedInUserId).child(userId).removeValue { [weak self] error, ref in
+      Firebase.Database.database().reference().child("following").child(currentLoggedInUserId).child(userId).removeValue { [weak self] error, ref in
         guard error == nil else {
           print("Failed to unfollow user: ", error ?? "")
           return
