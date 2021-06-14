@@ -9,6 +9,9 @@ import UIKit
 import AVFoundation
 
 class CameraViewController: UIViewController {
+  let output = AVCapturePhotoOutput()
+  
+  // MARK: - UI Elements
   private let dismissButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "right_arrow_shadow"), for: .normal)
@@ -39,6 +42,13 @@ class CameraViewController: UIViewController {
   
   @objc private func handleCapturePhoto() {
     print("Capturing photo...")
+    let settings = AVCapturePhotoSettings()
+    
+    guard let previewFormatType = settings.availablePreviewPhotoPixelFormatTypes.first else { return }
+    
+    settings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewFormatType]
+    
+    output.capturePhoto(with: settings, delegate: self)
   }
   
   // MARK: - Helper Methods
@@ -66,7 +76,7 @@ class CameraViewController: UIViewController {
     }
 
     // 2. Setup Outputs
-    let output = AVCapturePhotoOutput()
+    
     if captureSession.canAddOutput(output) {
       captureSession.addOutput(output)
     }
@@ -78,5 +88,21 @@ class CameraViewController: UIViewController {
     captureSession.startRunning()
   }
   
-  
+}
+
+// MARK: - AVCapturePhotoCaptureDelegate
+extension CameraViewController: AVCapturePhotoCaptureDelegate {
+  func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+    
+    guard let imageData = photo.fileDataRepresentation() else { return }
+    
+    let previewImage = UIImage(data: imageData)
+    
+    let previewImageView = UIImageView(image: previewImage)
+    view.addSubview(previewImageView)
+    previewImageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+    
+    print("Finish processing photo... ")
+    
+  }
 }
