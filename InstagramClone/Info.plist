@@ -64,5 +64,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow access to photo library to choose profile picture.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow access to camera to take photos.</string>
 </dict>
 </plist>

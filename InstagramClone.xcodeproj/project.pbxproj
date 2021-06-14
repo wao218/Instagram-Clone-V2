@@ -33,6 +33,7 @@
 		2B355017266EAD0400765AC0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B355016266EAD0400765AC0 /* CustomImageView.swift */; };
 		2B355019266EB69B00765AC0 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B355018266EB69B00765AC0 /* HomeCollectionViewController.swift */; };
 		2B35501B266EBD5000765AC0 /* HomePostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */; };
+		2B61E7DD2677EB8600469F40 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7DC2677EB8600469F40 /* CameraViewController.swift */; };
 		2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */; };
 		2BA4F3262673EBEC00964BA7 /* UserSearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */; };
 		2BA4F3282673F34500964BA7 /* UserSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */; };
@@ -91,6 +92,7 @@
 		2B355016266EAD0400765AC0 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		2B355018266EB69B00765AC0 /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
 		2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostCollectionViewCell.swift; sourceTree = "<group>"; };
+		2B61E7DC2677EB8600469F40 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewController.swift; sourceTree = "<group>"; };
 		2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		2B2E8735265727840006D997 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2B61E7DB2677EB4B00469F40 /* Camera */,
 				2BA4F3242673EBC800964BA7 /* Search */,
 				2BA4F3232673EBB300964BA7 /* Home */,
 				2BA4F3222673EBA100964BA7 /* User Profile */,
@@ -231,6 +234,14 @@
 				2B2E9F7F2654265D009A3631 /* Info.plist */,
 			);
 			path = InstagramCloneUITests;
+			sourceTree = "<group>";
+		};
+		2B61E7DB2677EB4B00469F40 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				2B61E7DC2677EB8600469F40 /* CameraViewController.swift */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 		2BA4F3202673EB4700964BA7 /* Login */ = {
@@ -574,6 +585,7 @@
 				2B35500F2669686700765AC0 /* MediaSelectorHeaderCollectionViewCell.swift in Sources */,
 				2B355013266EA2F100765AC0 /* PostModel.swift in Sources */,
 				2B355011266B4E6C00765AC0 /* ShareMediaViewController.swift in Sources */,
+				2B61E7DD2677EB8600469F40 /* CameraViewController.swift in Sources */,
 				2B355015266EA52800765AC0 /* UserProfilePostsCollectionViewCell.swift in Sources */,
 				2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */,
 				2BA4F3282673F34500964BA7 /* UserSearchCollectionViewCell.swift in Sources */,

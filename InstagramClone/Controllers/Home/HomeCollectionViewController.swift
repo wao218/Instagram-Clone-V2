@@ -65,6 +65,14 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
   }
   private func setupNavigationItems() {
     navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "camera3")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleCamera))
+  }
+  
+  @objc private func handleCamera() {
+    print("Showing camera")
+    let cameraController = CameraViewController()
+    cameraController.modalPresentationStyle = .fullScreen
+    present(cameraController, animated: true, completion: nil)
   }
   
   private func fetchPosts() {
