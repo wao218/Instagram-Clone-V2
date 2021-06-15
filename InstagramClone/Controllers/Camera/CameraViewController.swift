@@ -26,6 +26,10 @@ class CameraViewController: UIViewController {
     return button
   }()
   
+  override var prefersStatusBarHidden: Bool {
+    return true
+  }
+  
   // MARK: - Life Cycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -98,11 +102,16 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
     
     let previewImage = UIImage(data: imageData)
     
-    let previewImageView = UIImageView(image: previewImage)
-    view.addSubview(previewImageView)
-    previewImageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+    let containerView = PreviewPhotoContainerView()
+    containerView.previewImageView.image = previewImage
+    view.addSubview(containerView)
+    containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     
-    print("Finish processing photo... ")
+//    let previewImageView = UIImageView(image: previewImage)
+//    view.addSubview(previewImageView)
+//    previewImageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+//    
+//    print("Finish processing photo... ")
     
   }
 }
