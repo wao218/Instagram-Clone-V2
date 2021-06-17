@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class HomeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HomeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
   
   var posts = [Post]()
   private let reuseIdentifier = "Cell"
@@ -122,8 +122,17 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
     
     // Configure the cell
     cell.post = posts[indexPath.item]
+    cell.delegate = self
     
     return cell
+  }
+  
+  // MARK: - HomePostCellDelegate
+  func didTapComment(post: Post ) {
+    print("Message coming from HomeController")
+    print(post.caption)
+    let commentController = CommentsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    navigationController?.pushViewController(commentController, animated: true)
   }
   
   // MARK: - UICollectionViewDelegate

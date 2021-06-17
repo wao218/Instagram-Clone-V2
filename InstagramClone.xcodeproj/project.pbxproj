@@ -37,6 +37,7 @@
 		2B61E7E0267809E800469F40 /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7DF267809E800469F40 /* PreviewPhotoContainerView.swift */; };
 		2B61E7E2267BDC4100469F40 /* CustomAnimationPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */; };
 		2B61E7E4267BF9BC00469F40 /* CustomAnimationDismissor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */; };
+		2B61E7E6267C007000469F40 /* CommentsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E5267C007000469F40 /* CommentsCollectionViewController.swift */; };
 		2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */; };
 		2BA4F3262673EBEC00964BA7 /* UserSearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */; };
 		2BA4F3282673F34500964BA7 /* UserSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */; };
@@ -99,6 +100,7 @@
 		2B61E7DF267809E800469F40 /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
 		2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationPresentor.swift; sourceTree = "<group>"; };
 		2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationDismissor.swift; sourceTree = "<group>"; };
+		2B61E7E5267C007000469F40 /* CommentsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCollectionViewController.swift; sourceTree = "<group>"; };
 		2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewController.swift; sourceTree = "<group>"; };
 		2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				2B355018266EB69B00765AC0 /* HomeCollectionViewController.swift */,
+				2B61E7E5267C007000469F40 /* CommentsCollectionViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				2B35500B266897AE00765AC0 /* MediaSelectorCollectionViewController.swift in Sources */,
 				2B3550092666919100765AC0 /* LoginViewController.swift in Sources */,
 				2B61E7E0267809E800469F40 /* PreviewPhotoContainerView.swift in Sources */,
+				2B61E7E6267C007000469F40 /* CommentsCollectionViewController.swift in Sources */,
 				2B355017266EAD0400765AC0 /* CustomImageView.swift in Sources */,
 				2B61E7E4267BF9BC00469F40 /* CustomAnimationDismissor.swift in Sources */,
 				2BA4F3262673EBEC00964BA7 /* UserSearchCollectionViewController.swift in Sources */,
