@@ -34,8 +34,9 @@ class CameraViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    setupCaptureSession()
+    transitioningDelegate = self
     
+    setupCaptureSession()
     setupHUD()
   }
   
@@ -114,4 +115,16 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 //    print("Finish processing photo... ")
     
   }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension CameraViewController: UIViewControllerTransitioningDelegate {
+  func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    return CustomAnimationPresentor()
+  }
+  
+  func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+     return CustomAnimationDissmisor()
+  }
+  
 }

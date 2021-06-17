@@ -35,6 +35,8 @@
 		2B35501B266EBD5000765AC0 /* HomePostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */; };
 		2B61E7DD2677EB8600469F40 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7DC2677EB8600469F40 /* CameraViewController.swift */; };
 		2B61E7E0267809E800469F40 /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7DF267809E800469F40 /* PreviewPhotoContainerView.swift */; };
+		2B61E7E2267BDC4100469F40 /* CustomAnimationPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */; };
+		2B61E7E4267BF9BC00469F40 /* CustomAnimationDismissor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */; };
 		2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */; };
 		2BA4F3262673EBEC00964BA7 /* UserSearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */; };
 		2BA4F3282673F34500964BA7 /* UserSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */; };
@@ -95,6 +97,8 @@
 		2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostCollectionViewCell.swift; sourceTree = "<group>"; };
 		2B61E7DC2677EB8600469F40 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		2B61E7DF267809E800469F40 /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
+		2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationPresentor.swift; sourceTree = "<group>"; };
+		2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationDismissor.swift; sourceTree = "<group>"; };
 		2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewController.swift; sourceTree = "<group>"; };
 		2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 				2B2E86F726544C440006D997 /* UIKitExtensions.swift */,
 				2B355016266EAD0400765AC0 /* CustomImageView.swift */,
 				2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */,
+				2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */,
+				2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -605,6 +611,7 @@
 				2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */,
 				2B2E9F592654264C009A3631 /* AppDelegate.swift in Sources */,
 				2B2E873E2657281B0006D997 /* UserProfileHeaderCollectionViewCell.swift in Sources */,
+				2B61E7E2267BDC4100469F40 /* CustomAnimationPresentor.swift in Sources */,
 				2B355019266EB69B00765AC0 /* HomeCollectionViewController.swift in Sources */,
 				2B2E87262657111A0006D997 /* MainTabBarViewController.swift in Sources */,
 				2B2E9F632654264C009A3631 /* InstagramClone.xcdatamodeld in Sources */,
@@ -615,6 +622,7 @@
 				2B3550092666919100765AC0 /* LoginViewController.swift in Sources */,
 				2B61E7E0267809E800469F40 /* PreviewPhotoContainerView.swift in Sources */,
 				2B355017266EAD0400765AC0 /* CustomImageView.swift in Sources */,
+				2B61E7E4267BF9BC00469F40 /* CustomAnimationDismissor.swift in Sources */,
 				2BA4F3262673EBEC00964BA7 /* UserSearchCollectionViewController.swift in Sources */,
 				2B2E9F5B2654264C009A3631 /* SceneDelegate.swift in Sources */,
 			);
