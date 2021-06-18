@@ -94,8 +94,8 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
       
       dictionaries.forEach { (key, value) in
         guard let dictionary = value as? [String: Any] else { return }
-        let post = Post(user: user, dictionary: dictionary)
-        print(post.mediaUrl)
+        var post = Post(user: user, dictionary: dictionary)
+        post.id = key
         self?.posts.append(post)
       }
       
@@ -132,6 +132,7 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
     print("Message coming from HomeController")
     print(post.caption)
     let commentController = CommentsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    commentController.post = post
     navigationController?.pushViewController(commentController, animated: true)
   }
   

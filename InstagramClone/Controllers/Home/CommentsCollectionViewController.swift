@@ -6,13 +6,16 @@
 //
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier = "Cell"
 
 class CommentsCollectionViewController: UICollectionViewController {
   
+  var post: Post?
+  
   // MARK: - UI Elements
-  private var containerView: UIView = {
+  private lazy var containerView: UIView = {
     let containerview = UIView()
     containerview.backgroundColor = .white
     containerview.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
@@ -25,13 +28,17 @@ class CommentsCollectionViewController: UICollectionViewController {
     containerview.addSubview(submitButton)
     submitButton.anchor(top: containerview.topAnchor, leading: nil, bottom: containerview.bottomAnchor, trailing: containerview.trailingAnchor,padding: .init(top: 0, left: 0, bottom: 0, right: 12), size: .init(width: 50, height: 0))
     
-    let textField = UITextField()
-    textField.placeholder = "Enter comment"
-    containerview.addSubview(textField)
-    textField.anchor(top: containerview.topAnchor, leading: containerview.leadingAnchor, bottom: containerview.bottomAnchor, trailing: submitButton.leadingAnchor, padding: .init(top: 0, left: 12, bottom: 0, right: 0))
+  
+    containerview.addSubview(commentTextField)
+    commentTextField.anchor(top: containerview.topAnchor, leading: containerview.leadingAnchor, bottom: containerview.bottomAnchor, trailing: submitButton.leadingAnchor, padding: .init(top: 0, left: 12, bottom: 0, right: 0))
     return containerview
   }()
   
+  private let commentTextField: UITextField = {
+    let textField = UITextField()
+    textField.placeholder = "Enter comment"
+    return textField
+  }()
   
   // MARK: - LifeCycle Methods
   override func viewDidLoad() {
@@ -70,7 +77,24 @@ class CommentsCollectionViewController: UICollectionViewController {
   
   // MARK: - Action Methods
   @objc private func handleSubmit() {
-    print("handling submit.... ")
+    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    print("post id:", self.post?.id ?? "")
+    print("Inserting comment:", commentTextField.text ?? "")
+    
+    let postId = self.post?.id ?? ""
+    let values = [
+      "text": commentTextField.text ?? "",
+      "creationDate": Date().timeIntervalSince1970,
+      "uid": uid
+    ] as [String : Any]
+    Firebase.Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { error, ref in
+      guard error == nil else {
+        print("Failed to insert comment:", error ?? "")
+        return
+      }
+      
+      print("successfully inserted comment")
+    }
   }
   
   // MARK: - UICollectionViewDataSource
