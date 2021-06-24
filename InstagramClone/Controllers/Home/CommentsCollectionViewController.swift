@@ -31,6 +31,11 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
   
     containerview.addSubview(commentTextField)
     commentTextField.anchor(top: containerview.topAnchor, leading: containerview.leadingAnchor, bottom: containerview.bottomAnchor, trailing: submitButton.leadingAnchor, padding: .init(top: 0, left: 12, bottom: 0, right: 0))
+    
+    let lineSeparator = UIView()
+    lineSeparator.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+    containerview.addSubview(lineSeparator)
+    lineSeparator.anchor(top: containerview.topAnchor, leading: containerview.leadingAnchor, bottom: nil, trailing: containerview.trailingAnchor, size: .init(width: 0, height: 0.5))
     return containerview
   }()
   
@@ -48,8 +53,9 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
     self.collectionView!.register(CommentsCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     
     navigationItem.title = "Comments"
-    
-    collectionView.backgroundColor = .red
+    collectionView.backgroundColor = .white
+    collectionView.alwaysBounceVertical = true
+    collectionView.keyboardDismissMode = .interactive
     
     fetchComments()
   }
@@ -71,9 +77,13 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
     let ref = Firebase.Database.database().reference().child("comments").child(postId)
     ref.observe(.childAdded) { [weak self] snapshot in
       guard let dictionary = snapshot.value as? [String: Any] else { return }
-      let comment = Comment(dictionary: dictionary)
-      self?.comments.append(comment)
-      self?.collectionView.reloadData()
+      guard let uid = dictionary["uid"] as? String else { return }
+      
+      Firebase.Database.fetchUserWithUID(uid: uid) { user in
+        let comment = Comment(user: user, dictionary: dictionary)
+        self?.comments.append(comment)
+        self?.collectionView.reloadData()
+      }
     } withCancel: { error in
       print("failed to observe comments")
     }
@@ -131,9 +141,22 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
   
   // MARK: - UICollectionViewDelegateFlowLayout
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: view.frame.width, height: 50)
+    let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+    let dummyCell = CommentsCollectionViewCell(frame: frame)
+    dummyCell.comment = comments[indexPath.item]
+    dummyCell.layoutIfNeeded()
+    
+    let targetSize = CGSize(width: view.frame.width, height: 1000)
+    let estimatedSzie = dummyCell.systemLayoutSizeFitting(targetSize)
+    
+    let height = max(40 + 8 + 8, estimatedSzie.height)
+    
+    return CGSize(width: view.frame.width, height: height)
   }
   
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 0
+  }
   // MARK: - UICollectionViewDelegate
   
   /*
