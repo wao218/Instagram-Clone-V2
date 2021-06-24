@@ -38,6 +38,8 @@
 		2B61E7E2267BDC4100469F40 /* CustomAnimationPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */; };
 		2B61E7E4267BF9BC00469F40 /* CustomAnimationDismissor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */; };
 		2B61E7E6267C007000469F40 /* CommentsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E5267C007000469F40 /* CommentsCollectionViewController.swift */; };
+		2B61E7E82680DA6800469F40 /* CommentsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E72680DA6700469F40 /* CommentsCollectionViewCell.swift */; };
+		2B61E7EA26849F2700469F40 /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B61E7E926849F2600469F40 /* CommentModel.swift */; };
 		2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */; };
 		2BA4F3262673EBEC00964BA7 /* UserSearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */; };
 		2BA4F3282673F34500964BA7 /* UserSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */; };
@@ -101,6 +103,8 @@
 		2B61E7E1267BDC4000469F40 /* CustomAnimationPresentor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationPresentor.swift; sourceTree = "<group>"; };
 		2B61E7E3267BF9BC00469F40 /* CustomAnimationDismissor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationDismissor.swift; sourceTree = "<group>"; };
 		2B61E7E5267C007000469F40 /* CommentsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCollectionViewController.swift; sourceTree = "<group>"; };
+		2B61E7E72680DA6700469F40 /* CommentsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCollectionViewCell.swift; sourceTree = "<group>"; };
+		2B61E7E926849F2600469F40 /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
 		2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewController.swift; sourceTree = "<group>"; };
 		2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 			children = (
 				2B2E87432658382A0006D997 /* UserModel.swift */,
 				2B355012266EA2F100765AC0 /* PostModel.swift */,
+				2B61E7E926849F2600469F40 /* CommentModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -319,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				2B35501A266EBD5000765AC0 /* HomePostCollectionViewCell.swift */,
+				2B61E7E72680DA6700469F40 /* CommentsCollectionViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -607,6 +613,7 @@
 				2B355011266B4E6C00765AC0 /* ShareMediaViewController.swift in Sources */,
 				2B61E7DD2677EB8600469F40 /* CameraViewController.swift in Sources */,
 				2B355015266EA52800765AC0 /* UserProfilePostsCollectionViewCell.swift in Sources */,
+				2B61E7EA26849F2700469F40 /* CommentModel.swift in Sources */,
 				2BA4F31F2673B3CB00964BA7 /* FirebaseExtensions.swift in Sources */,
 				2BA4F3282673F34500964BA7 /* UserSearchCollectionViewCell.swift in Sources */,
 				2B2E86F826544C440006D997 /* UIKitExtensions.swift in Sources */,
@@ -614,6 +621,7 @@
 				2B2E872E265713120006D997 /* UserProfileViewController.swift in Sources */,
 				2B2E9F592654264C009A3631 /* AppDelegate.swift in Sources */,
 				2B2E873E2657281B0006D997 /* UserProfileHeaderCollectionViewCell.swift in Sources */,
+				2B61E7E82680DA6800469F40 /* CommentsCollectionViewCell.swift in Sources */,
 				2B61E7E2267BDC4100469F40 /* CustomAnimationPresentor.swift in Sources */,
 				2B355019266EB69B00765AC0 /* HomeCollectionViewController.swift in Sources */,
 				2B2E87262657111A0006D997 /* MainTabBarViewController.swift in Sources */,

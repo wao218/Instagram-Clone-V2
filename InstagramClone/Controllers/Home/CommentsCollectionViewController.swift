@@ -8,11 +8,11 @@
 import UIKit
 import Firebase
 
-private let reuseIdentifier = "Cell"
-
-class CommentsCollectionViewController: UICollectionViewController {
+class CommentsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
   
   var post: Post?
+  var comments = [Comment]()
+  private let reuseIdentifier = "cellID"
   
   // MARK: - UI Elements
   private lazy var containerView: UIView = {
@@ -45,12 +45,13 @@ class CommentsCollectionViewController: UICollectionViewController {
     super.viewDidLoad()
     
     // Register cell classes
-    self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    self.collectionView!.register(CommentsCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     
     navigationItem.title = "Comments"
     
     collectionView.backgroundColor = .red
     
+    fetchComments()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +64,22 @@ class CommentsCollectionViewController: UICollectionViewController {
     tabBarController?.tabBar.isHidden = false
   }
   
+  
+  // MARK: - Helper Methods
+  private func fetchComments() {
+    guard let postId = self.post?.id else { return }
+    let ref = Firebase.Database.database().reference().child("comments").child(postId)
+    ref.observe(.childAdded) { [weak self] snapshot in
+      guard let dictionary = snapshot.value as? [String: Any] else { return }
+      let comment = Comment(dictionary: dictionary)
+      self?.comments.append(comment)
+      self?.collectionView.reloadData()
+    } withCancel: { error in
+      print("failed to observe comments")
+    }
+
+  }
+  
   // MARK: - Other Methods
   override var inputAccessoryView: UIView? {
     get {
@@ -73,7 +90,6 @@ class CommentsCollectionViewController: UICollectionViewController {
   override var canBecomeFirstResponder: Bool {
     return true
   }
-  
   
   // MARK: - Action Methods
   @objc private func handleSubmit() {
@@ -99,26 +115,26 @@ class CommentsCollectionViewController: UICollectionViewController {
   
   // MARK: - UICollectionViewDataSource
   
-  override func numberOfSections(in collectionView: UICollectionView) -> Int {
-    // #warning Incomplete implementation, return the number of sections
-    return 0
-  }
-  
-  
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     // #warning Incomplete implementation, return the number of items
-    return 0
+    return comments.count
   }
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CommentsCollectionViewCell
     
     // Configure the cell
-    
+    cell.comment = comments[indexPath.item]
     return cell
   }
   
-  // MARK: UICollectionViewDelegate
+  
+  // MARK: - UICollectionViewDelegateFlowLayout
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return CGSize(width: view.frame.width, height: 50)
+  }
+  
+  // MARK: - UICollectionViewDelegate
   
   /*
    // Uncomment this method to specify if the specified item should be highlighted during tracking
