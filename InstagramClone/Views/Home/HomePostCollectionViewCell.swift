@@ -9,6 +9,7 @@ import UIKit
 
 protocol HomePostCellDelegate {
   func didTapComment(post: Post)
+  func didLike(for cell: HomePostCollectionViewCell)
 }
 
 class HomePostCollectionViewCell: UICollectionViewCell {
@@ -17,6 +18,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
   var post: Post? {
     didSet {
       guard let mediaUrl = post?.mediaUrl else { return }
+      likeButton.setImage(post?.hasLiked == true ? UIImage(named: "like_selected") : UIImage(named: "like_unselected"), for: .normal)
+      
       postImageView.loadImage(urlString: mediaUrl)
 
       guard let username = post?.user.username else { return }
@@ -59,9 +62,10 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     return button
   }()
   
-  private let likeButton: UIButton = {
+  private lazy var likeButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "like_unselected")?.withRenderingMode(.alwaysOriginal), for: .normal)
+    button.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
     return button
   }()
  
@@ -124,6 +128,11 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     print("Handling comments.....")
     guard let post = post else { return }
     delegate?.didTapComment(post: post)
+  }
+  
+  @objc private func handleLike() {
+    print("Handling like from within cell")
+    delegate?.didLike(for: self)
   }
   
   // MARK: - Helper Methods

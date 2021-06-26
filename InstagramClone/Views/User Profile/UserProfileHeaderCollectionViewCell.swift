@@ -8,7 +8,14 @@
 import UIKit
 import Firebase
 
+protocol UserProfileHeaderDelegate {
+  func didChangeToListView()
+  func didChangeToGridView()
+}
+
 class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
+  var delegate: UserProfileHeaderDelegate?
+  
   // MARK: - Data Model
   var user: User? {
     didSet {
@@ -20,40 +27,42 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
   }
   
   // MARK: - UI Elements
-  let profileImageView: CustomImageView = {
+  private let profileImageView: CustomImageView = {
     let imageView = CustomImageView()
     return imageView
   }()
   
-  let gridButton: UIButton = {
+  private lazy var gridButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "grid"), for: .normal)
+    button.addTarget(self, action: #selector(handleChangeToGridView), for: .touchUpInside)
     return button
   }()
   
-  let listButton: UIButton = {
+  private lazy var listButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "list"), for: .normal)
     button.tintColor = UIColor(white: 0, alpha: 0.2)
+    button.addTarget(self, action: #selector(handleChangeToListView), for: .touchUpInside)
     return button
   }()
   
   
-  let bookmarkButton: UIButton = {
+  private let bookmarkButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(named: "ribbon"), for: .normal)
     button.tintColor = UIColor(white: 0, alpha: 0.2)
     return button
   }()
   
-  let usernameLabel: UILabel = {
+  private let usernameLabel: UILabel = {
     let label = UILabel()
     label.text = "username"
     label.font = UIFont.boldSystemFont(ofSize: 14)
     return label
   }()
   
-  let postsLabel: UILabel = {
+  private let postsLabel: UILabel = {
     let label = UILabel()
     
     let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -67,7 +76,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     return label
   }()
   
-  let followersLabel: UILabel = {
+  private let followersLabel: UILabel = {
     let label = UILabel()
     
     let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -81,7 +90,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     return label
   }()
   
-  let followingLabel: UILabel = {
+  private let followingLabel: UILabel = {
     let label = UILabel()
     
     let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -95,7 +104,7 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
     return label
   }()
   
-  lazy var editFollowProfileButton: UIButton = {
+  private lazy var editFollowProfileButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("Edit Profile", for: .normal)
     button.setTitleColor(.black, for: .normal)
@@ -132,6 +141,20 @@ class UserProfileHeaderCollectionViewCell: UICollectionViewCell {
   }
   
   // MARK: - Action Methods
+  @objc private func handleChangeToListView() {
+    print("Handle change to list view")
+    listButton.tintColor = .mainBlue()
+    gridButton.tintColor = UIColor(white: 0, alpha: 0.2)
+    delegate?.didChangeToListView()
+  }
+  
+  @objc private func handleChangeToGridView() {
+    print("Handle change to grid view")
+    gridButton.tintColor = .mainBlue()
+    listButton.tintColor = UIColor(white: 0, alpha: 0.2)
+    delegate?.didChangeToGridView()
+  }
+  
   @objc private func handleEditProfileOrFollow() {
     print("Execute edit profile / follow / unfollow logic....")
     

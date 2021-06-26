@@ -96,14 +96,26 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
         guard let dictionary = value as? [String: Any] else { return }
         var post = Post(user: user, dictionary: dictionary)
         post.id = key
-        self?.posts.append(post)
+        guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+        Firebase.Database.database().reference().child("likes").child(key).child(uid).observeSingleEvent(of: .value) { snapshot in
+          print(snapshot)
+          if let value = snapshot.value as? Int, value == 1 {
+            post.hasLiked = true
+          } else {
+            post.hasLiked = false
+          }
+          
+          self?.posts.append(post)
+          self?.posts.sort(by: { p1, p2 in
+            return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+          })
+          self?.collectionView.reloadData()
+        } withCancel: { error in
+          print("Failed to fetch like info for post:", error)
+        }
+
       }
-      
-      self?.posts.sort(by: { p1, p2 in
-        return p1.creationDate.compare(p2.creationDate) == .orderedDescending
-      })
-      
-      self?.collectionView.reloadData()
+
       
     } withCancel: { error in
       print("Failed to fetch posts: ", error)
@@ -134,6 +146,30 @@ class HomeCollectionViewController: UICollectionViewController, UICollectionView
     let commentController = CommentsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     commentController.post = post
     navigationController?.pushViewController(commentController, animated: true)
+  }
+  
+  func didLike(for cell: HomePostCollectionViewCell) {
+    print("Handling like inside controller")
+    guard let indexPath = collectionView.indexPath(for: cell) else { return }
+    
+    var post = self.posts[indexPath.item]
+    print(post.caption)
+    
+    guard let postId = post.id else { return }
+    
+    guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
+    let values = [uid: post.hasLiked == true ? 0 : 1]
+    
+    Firebase.Database.database().reference().child("likes").child(postId).updateChildValues(values) { error, _ in
+      guard error == nil else {
+        print("Failed to like post:", error ?? "")
+        return
+      }
+      print("Successfully liked post.")
+      post.hasLiked = !post.hasLiked
+      self.posts[indexPath.item] = post
+      self.collectionView.reloadItems(at: [indexPath])
+    }
   }
   
   // MARK: - UICollectionViewDelegate
