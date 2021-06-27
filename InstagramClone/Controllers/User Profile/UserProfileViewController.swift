@@ -98,20 +98,24 @@ class UserProfileViewController: UICollectionViewController, UICollectionViewDel
     
     guard let uid = self.user?.uid else { return }
     let ref = Firebase.Database.database().reference().child("posts").child(uid)
-    var query = ref.queryOrderedByKey()
-    
+//    var query = ref.queryOrderedByKey()
+    var query = ref.queryOrdered(byChild: "creationDate")
     if posts.count > 0 {
-      let value = posts.last?.id
-      query = query.queryStarting(atValue: value)
+//      let value = posts.last?.id
+      let value = posts.last?.creationDate.timeIntervalSince1970
+      query = query.queryEnding(atValue: value)
     }
     
-    query.queryLimited(toFirst: 4).observeSingleEvent(of: .value) { [weak self] snapshot in
+    query.queryLimited(toLast: 4).observeSingleEvent(of: .value) { [weak self] snapshot in
       
       guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+      
+      allObjects.reverse()
+      
       if allObjects.count < 4 {
         self?.isFinishedPaging = true
       }
-      if let postCount = self?.posts.count, postCount > 0 {
+      if let postCount = self?.posts.count, postCount > 0 && allObjects.count > 0 {
         allObjects.removeFirst()
       }
       
