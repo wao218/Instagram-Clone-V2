@@ -8,9 +8,11 @@
 import UIKit
 import CoreData
 import Firebase
+import UserNotifications
+import FirebaseMessaging
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
 
 
@@ -18,7 +20,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Override point for customization after application launch.
     
     FirebaseApp.configure()
+    
+    attemptToRegisterForNotifications(application: application)
+    
     return true
+  }
+  
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    print("Registerd for notifications:", deviceToken)
+  }
+  
+  // MARK: - MessagingDelegate
+  func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+    print("Registered with FCM with token:", fcmToken)
+  }
+  
+  // MARK: - UserNotificationCenterDelegate
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    completionHandler(.banner)
+  }
+  
+  // MARK: - Helper Methods
+  
+  private func attemptToRegisterForNotifications(application: UIApplication) {
+    print("attempting to register APNS...")
+    
+    UNUserNotificationCenter.current().delegate = self
+    Messaging.messaging().delegate = self
+    // user notifications auth
+    // all of this works for iOS 10+
+    let options: UNAuthorizationOptions = [.alert, .badge, .sound]
+    UNUserNotificationCenter.current().requestAuthorization(options: options) { granted, error in
+      guard error == nil else {
+        print("failed to request auth:", error ?? "")
+        return
+      }
+      
+      if granted {
+        print("auth granted")
+      } else {
+        print("auth denied")
+      }
+    }
+    
+    application.registerForRemoteNotifications()
   }
 
   // MARK: UISceneSession Lifecycle

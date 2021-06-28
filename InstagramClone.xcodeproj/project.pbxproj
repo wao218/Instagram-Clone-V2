@@ -105,6 +105,7 @@
 		2B61E7E5267C007000469F40 /* CommentsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCollectionViewController.swift; sourceTree = "<group>"; };
 		2B61E7E72680DA6700469F40 /* CommentsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCollectionViewCell.swift; sourceTree = "<group>"; };
 		2B61E7E926849F2600469F40 /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
+		2B61E7EB2689EC1A00469F40 /* InstagramClone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InstagramClone.entitlements; sourceTree = "<group>"; };
 		2BA4F31E2673B3CB00964BA7 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2BA4F3252673EBEC00964BA7 /* UserSearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewController.swift; sourceTree = "<group>"; };
 		2BA4F3272673F34500964BA7 /* UserSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -220,6 +221,7 @@
 		2B2E9F572654264C009A3631 /* InstagramClone */ = {
 			isa = PBXGroup;
 			children = (
+				2B61E7EB2689EC1A00469F40 /* InstagramClone.entitlements */,
 				2B2E8742265837FE0006D997 /* Models */,
 				2B2E8736265727AE0006D997 /* Views */,
 				2B2E8735265727840006D997 /* Controllers */,
@@ -813,6 +815,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = InstagramClone/InstagramClone.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KB82824ZMA;
 				INFOPLIST_FILE = InstagramClone/Info.plist;
@@ -833,6 +836,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = InstagramClone/InstagramClone.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KB82824ZMA;
 				INFOPLIST_FILE = InstagramClone/Info.plist;
