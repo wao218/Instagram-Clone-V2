@@ -32,13 +32,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
   
   // MARK: - MessagingDelegate
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    print("Registered with FCM with token:", fcmToken)
+    print("Registered with FCM with token:", fcmToken ?? "")
   }
   
   // MARK: - UserNotificationCenterDelegate
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     completionHandler(.banner)
   }
+  
+  
+  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    let userInfo = response.notification.request.content.userInfo
+    
+    if let followerId = userInfo["followerId"] as? String {
+      print("This is the follwer id: ", followerId)
+      
+      let userProfileController = UserProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+      
+      userProfileController.userId = followerId
+      
+      let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
+      
+      if let mainTabBarController = sceneDelegate.window?.rootViewController as? MainTabBarViewController {
+        
+        mainTabBarController.selectedIndex = 0
+        mainTabBarController.presentedViewController?.dismiss(animated: true, completion: nil)
+        
+        if let homeNavigationController = mainTabBarController.viewControllers?.first as? UINavigationController {
+         
+          homeNavigationController.pushViewController(userProfileController, animated: true)
+        }
+      }
+    }
+  }
+
+  
+ 
   
   // MARK: - Helper Methods
   
