@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
 
 class RegisterViewController: UIViewController {
 
@@ -159,9 +160,12 @@ class RegisterViewController: UIViewController {
           let urlString = url.absoluteString
           print("Successfully uploaded profile image: ", urlString)
           
+          guard let fcmToken = Messaging.messaging().fcmToken else { return }
+          
           let dictionaryValues = [
             "username": username,
-            "profileImageUrl": urlString
+            "profileImageUrl": urlString,
+            "fcmToken": fcmToken
           ]
           let values = [uid: dictionaryValues]
 
