@@ -8,42 +8,22 @@
 import UIKit
 import Firebase
 
-class CommentsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class CommentsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, CommentInputAccessoryViewDelegate {
   
   var post: Post?
   var comments = [Comment]()
   private let reuseIdentifier = "cellID"
   
   // MARK: - UI Elements
-  private lazy var containerView: UIView = {
-    let containerview = UIView()
-    containerview.backgroundColor = .white
-    containerview.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+  private lazy var containerView: CommentInputAccessoryView = {
     
-    let submitButton = UIButton(type: .system)
-    submitButton.setTitle("Submit", for: .normal)
-    submitButton.setTitleColor(.black, for: .normal)
-    submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-    submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
-    containerview.addSubview(submitButton)
-    submitButton.anchor(top: containerview.topAnchor, leading: nil, bottom: containerview.bottomAnchor, trailing: containerview.trailingAnchor,padding: .init(top: 0, left: 0, bottom: 0, right: 12), size: .init(width: 50, height: 0))
-    
-  
-    containerview.addSubview(commentTextField)
-    commentTextField.anchor(top: containerview.topAnchor, leading: containerview.leadingAnchor, bottom: containerview.bottomAnchor, trailing: submitButton.leadingAnchor, padding: .init(top: 0, left: 12, bottom: 0, right: 0))
-    
-    let lineSeparator = UIView()
-    lineSeparator.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
-    containerview.addSubview(lineSeparator)
-    lineSeparator.anchor(top: containerview.topAnchor, leading: containerview.leadingAnchor, bottom: nil, trailing: containerview.trailingAnchor, size: .init(width: 0, height: 0.5))
-    return containerview
+    let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+    let commentInputAccessoryView = CommentInputAccessoryView(frame: frame)
+    commentInputAccessoryView.delegate = self
+    return commentInputAccessoryView
   }()
   
-  private let commentTextField: UITextField = {
-    let textField = UITextField()
-    textField.placeholder = "Enter comment"
-    return textField
-  }()
+  
   
   // MARK: - LifeCycle Methods
   override func viewDidLoad() {
@@ -69,7 +49,6 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
     super.viewWillDisappear(animated)
     tabBarController?.tabBar.isHidden = false
   }
-  
   
   // MARK: - Helper Methods
   private func fetchComments() {
@@ -101,28 +80,32 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
     return true
   }
   
-  // MARK: - Action Methods
-  @objc private func handleSubmit() {
+  // MARK: - CommentInputAccessoryViewDelegate
+  func didSubmit(for comment: String) {
+    print("Trying to insert a comment into firebase")
+    
     guard let uid = Firebase.Auth.auth().currentUser?.uid else { return }
     print("post id:", self.post?.id ?? "")
-    print("Inserting comment:", commentTextField.text ?? "")
-    
+    print("Inserting comment:", comment)
+
     let postId = self.post?.id ?? ""
     let values = [
-      "text": commentTextField.text ?? "",
+      "text": comment,
       "creationDate": Date().timeIntervalSince1970,
       "uid": uid
     ] as [String : Any]
-    Firebase.Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { error, ref in
+    Firebase.Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { [weak self] error, ref in
       guard error == nil else {
         print("Failed to insert comment:", error ?? "")
         return
       }
-      
+
       print("successfully inserted comment")
+      
+      self?.containerView.clearCommentTextView()
     }
   }
-  
+    
   // MARK: - UICollectionViewDataSource
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -159,33 +142,6 @@ class CommentsCollectionViewController: UICollectionViewController, UICollection
   }
   // MARK: - UICollectionViewDelegate
   
-  /*
-   // Uncomment this method to specify if the specified item should be highlighted during tracking
-   override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-   return true
-   }
-   */
-  
-  /*
-   // Uncomment this method to specify if the specified item should be selected
-   override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-   return true
-   }
-   */
-  
-  /*
-   // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-   override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-   return false
-   }
-   
-   override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-   return false
-   }
-   
-   override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-   
-   }
-   */
+ 
   
 }
